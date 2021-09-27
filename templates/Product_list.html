@@ -1,0 +1,52 @@
+{% extends 'home.html' %} {% load cart %} {% block Product_list %}
+
+<div class="container mt-4">
+    <div class="p-2 m-3">
+        <p class="display-6 d-flex justify-content-center" style="margin-bottom:4px;"><b>-: Prachin Herbs products :-</b></p>
+    </div>
+</div>
+<div class="container my-5">
+    <div class="row mx-auto">
+        {% for product in products %}
+        <div class="col-lg-3" id="{{product.product_id}}">
+            <div class="card mx-auto mb-3">
+                <img class="card-img-top" src="{{product.thumb.url}}" alt="Card image cap" style="height:180px">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.product_name}}</h5>
+                    <p class="card-text">{{product.desc}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Prize :<b> ₹{{product.price}}</b></li>
+                </ul>
+                <div class="card-body">
+                    {% if product|is_in_cart:request.session.cart %}
+                    <div class="row d-flex justify-content-center">
+                        <form action="/#{{product.product_id}}" class="col-3 d-flex justify-content-center" method="post">
+                            {% csrf_token %}
+                            <input hidden type="text" name='prod_id' value='{{product.product_id}}'>
+                            <input hidden type="text" name='remove' value='True'>
+                            <input type="submit" value=" - " class="btn btn-block border-right" style="background-color:rgb(242, 242, 145);">
+                        </form>
+
+                        <div class="text-center col-6 d-flex justify-content-center pt-1">{{product|cart_quantity:request.session.cart}} in Cart</div>
+
+                        <form action="/#{{product.product_id}}" class="col-3 d-flex justify-content-center" method="post">
+                            {% csrf_token %}
+                            <input hidden type="text" name='prod_id' value='{{product.product_id}}'>
+                            <input type="submit" value=" + " class="btn btn-block border-left" style="background-color:rgb(242, 242, 145);">
+                        </form>
+                    </div>
+                    {% else %}
+                    <form action="/#{{product.product_id}}" method="POST" class="btn-block">{% csrf_token %}
+                        <input hidden type="text" name='prod_id' value='{{product.product_id}}'>
+                        <input type="submit" class="float-right btn-block form-control" value="Add To Cart" style="background-color:rgb(242, 242, 145);">
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock Product_list %}

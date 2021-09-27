@@ -1,0 +1,50 @@
+{% include 'base.html' %} {% load cart %}
+
+<div class="container">
+    <div class="p-2">
+        {% if not orders %}
+        <p class="display-6 pl-4 ml-4">👉 <b>You Don't Have any previous orders</b></p>
+        {% else %}
+        <p class="display-6 "><b>Your Orders</b></p>
+        <hr>
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr class="table-info">
+                    <th>Sno.</th>
+                    <th width="25%">Image</th>
+                    <th>Product</th>
+                    <th>Date</th>
+                    {% comment %}
+                    <th>Price</th>
+                    <th>Quantity</th> {% endcomment %}
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for order in orders %}
+                <tr class="table-info">
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="width: 100%;" class="rounded" src="{{order.product.thumb.url}}" alt=""></td>
+                    <td>{{order.product.product_name}}</td>
+                    <td>{{order.date}}</td>
+                    {% comment %}
+                    <td>{{order.price|currency}}</td>
+                    <td>{{order.quantity}}</td> {% endcomment %}
+                    <td>{{order.price|currency}}*{{order.quantity}}={{order.quantity|multiply:order.price|currency}}</td>
+                    {% if order.status %}
+                    <td><small class="badge alert-success">Completed</small></td>
+                    {%else%}
+                    <td><small class="badge alert-warning">Pending</small></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% endif %}
+    </div>
+</div>

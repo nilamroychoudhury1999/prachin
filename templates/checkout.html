@@ -1,0 +1,42 @@
+{% include "base.html" %} {% load cart %}
+<div class="container">
+    <div class="p-4 m-4">
+        <p class="display-6 pl-4 ml-4"><b>Total Amount To be Paid</b></p>
+        <hr>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                <div class="mt-3">
+                    <p class="display-5" style="font-weight:400;">Amount : <strong>{{products|total_cart_price:request.session.cart|currency}}</strong></p>
+                </div>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <div class="mt-4">
+                    <button class="btn-lg btn-warning"><a href="?action=create_payment" style="text-decoration:none;color:black;">Proceed to Checkout</a></button>
+                </div>
+            </div>
+        </div>
+        {% if order_object is not None %}
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            var options = {
+                "key": "rzp_test_s1GJSXv7cJJcGE", // Enter the Key ID generated from the Dashboard
+                "name": "Prachin Herbs",
+                "description": "Taste of Home",
+                "order_id": "{{order_object.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "callback_url": "http://127.0.0.1:8000/pay",
+                "prefill": {
+                    "name": "{{user.username}}",
+                    "email": "{{user.email}}",
+                    "contact": "{{phone_number}}"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "rgb(192, 240, 237)"
+                },
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        </script>
+        {% endif %}

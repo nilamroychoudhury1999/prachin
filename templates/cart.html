@@ -1,0 +1,66 @@
+{% include 'base.html' %} {% load cart %}
+
+<div class="container">
+    <div class="p-2">
+        {% if not request.session.cart|length %}
+        <p class="display-6 pl-4 ml-4">👉 <b>Nothing in Cart.</b></p>
+        {% else %}
+        <p class="display-6 pl-4 ml-4"><b>Your Cart</b></p>
+        <hr>
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr class="table-info">
+                    <th width="10%" class="text-align-center">Sno.</th>
+                    <th width="20%">Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for product in products %}
+                <tr class="table-info">
+                    <td>{{forloop.counter}}</td>
+                    <td><img style="width: 100%;" class="card-img rounded" src="{{product.thumb.url}}" alt=""></td>
+                    <td>{{product.product_name}}</td>
+                    <td>{{product.price|currency}}</td>
+                    <td>{{product|cart_quantity:request.session.cart}}</td>
+                    <td>{{product|price_total:request.session.cart|currency}}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+                <form action="/cart" method="POST">{% csrf_token %}
+                    <tr class="table-info">
+                        <th colspan="4">
+                            <div class="d-flex flex-column justify-content-center form-group">
+                                <label for="" class="m-2 mb-0">Address</label>
+                                <input type="text" name="address" id="" class="m-2" placeholder="" aria-describedby="helpId" required>
+                            </div>
+                        </th>
+                        <th class="" colspan="">Total</th>
+                        <th>{{products|total_cart_price:request.session.cart|currency}}</th>
+                    </tr>
+                    <tr class="table-info">
+                        <th colspan="4">
+                            <div class="d-flex flex-column justify-content-center form-group ">
+                                <label for="" class="m-2 mb-0">Phone</label>
+                                <input type="text" name="phone" id="" class="m-2" placeholder="" aria-describedby="helpId" required>
+                            </div>
+                        </th>
+                        <th colspan="2">
+                            <div class="d-flex justify-content-center">
+                                <input type="submit" class="btn-sm btn-warning" value="Continue to Checkout">
+                            </div>
+                        </th>
+                    </tr>
+                </form>
+            </tfoot>
+        </table>
+        {% endif %}
+    </div>
+</div>

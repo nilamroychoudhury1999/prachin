@@ -1,0 +1,24 @@
+.mid{
+    text-align: center;
+    margin: 25px 0px 25px 0px;
+    background-color:rgb(105, 212, 207);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+#brand{
+    font-size:xx-large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 600;
+    color: forestgreen;
+    margin-right: 0px;
+}
+
+.redirect_signup {
+    margin: 10px 0px 10px 0px;
+    text-align: left;
+}
+
+body{
+    background-color:rgb(192, 240, 237);
+}
